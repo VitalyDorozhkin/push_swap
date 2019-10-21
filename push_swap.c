@@ -251,7 +251,72 @@ void	print_list(t_list *lst_a, t_list *lst_b, int c)
 			ft_printf("|%*s|\n", c, " ");
 	}
 	ft_print_border(c, 0);
-	sleep(1);
+}
+
+void sort_three(t_list **lst_a)
+{
+	int a;
+	int b;
+	int c;
+
+	a = (*lst_a)->content_size;
+	b = (*lst_a)->next->content_size;
+	c = (*lst_a)->next->next->content_size;
+	if(a < b && b < c)
+		return ;
+	if(a < b)
+	{
+		rra(lst_a);
+		if(c > a)
+			sa(*lst_a);
+	}
+	else
+	{
+		if(a < c || b > c)
+			sa(*lst_a);
+		if(a > c && a > b)
+			(c > b) ? ra(lst_a) : rra(lst_a);
+	}
+}
+
+
+
+void		start(t_list **lst_a, t_list **lst_b, int c)
+{
+	int		max;
+	int		premax;
+	int		min;
+	t_list	*tmp;
+
+	tmp = *lst_a;
+	max = -214748364;
+	premax = -214748364;
+	min = 214748364;
+	while (tmp)
+	{
+		if ((int)tmp->content_size > max)
+		{
+			premax = max;
+			max = (int)tmp->content_size;
+		}
+		else if((int)tmp->content_size > premax)
+			premax = (int)tmp->content_size;
+		if((int)tmp->content_size < min)
+			min = (int)tmp->content_size;
+		tmp = tmp->next;
+	}
+	while ((*lst_a)->content_size != max && (*lst_a)->content_size != premax && (*lst_a)->content_size != min)
+		pb(lst_a, lst_b);
+	ra(lst_a);
+	while ((*lst_a)->content_size != max && (*lst_a)->content_size != premax && (*lst_a)->content_size != min)
+		pb(lst_a, lst_b);
+	ra(lst_a);
+	while ((*lst_a)->content_size != max && (*lst_a)->content_size != premax && (*lst_a)->content_size != min)
+		pb(lst_a, lst_b);
+	ra(lst_a);
+	while ((*lst_a)->content_size != max && (*lst_a)->content_size != premax && (*lst_a)->content_size != min)
+		pb(lst_a, lst_b);
+	sort_three(lst_a);
 }
 
 int		main(int argc, char **argv)
@@ -259,49 +324,10 @@ int		main(int argc, char **argv)
 	t_list	*lst_a;
 	t_list	*lst_b;
 	int c;
-	t_list	*lst_a_tmp;
+
 	lst_a = set_list(argc, argv);
 	c = get_max_len(lst_a);
-	print_list(lst_b, lst_a, c);
-	pb(&lst_a, &lst_b);
-	print_list(lst_b, lst_a, c);
-	pb(&lst_a, &lst_b);
-	print_list(lst_b, lst_a, c);
-	ra(&lst_a);
-	print_list(lst_b, lst_a, c);
-	pb(&lst_a, &lst_b);
-	print_list(lst_b, lst_a, c);
-	pb(&lst_a, &lst_b);
-	print_list(lst_b, lst_a, c);
-	pb(&lst_a, &lst_b);
-	print_list(lst_b, lst_a, c);
-	pb(&lst_a, &lst_b);
-	print_list(lst_b, lst_a, c);
-	ra(&lst_a);
-	print_list(lst_b, lst_a, c);
-	pb(&lst_a, &lst_b);
-	print_list(lst_b, lst_a, c);
-	pb(&lst_a, &lst_b);
-	print_list(lst_b, lst_a, c);
-	pb(&lst_a, &lst_b);
-	print_list(lst_b, lst_a, c);
-	pb(&lst_a, &lst_b);
-	print_list(lst_b, lst_a, c);
-	ra(&lst_a);
-	print_list(lst_b, lst_a, c);
-	pb(&lst_a, &lst_b);
-	print_list(lst_b, lst_a, c);
-	pa(&lst_a, &lst_b);
-	print_list(lst_b, lst_a, c);
-	pb(&lst_a, &lst_b);
-	print_list(lst_b, lst_a, c);
-	pa(&lst_a, &lst_b);
-	print_list(lst_b, lst_a, c);
-	ra(&lst_a);
-	print_list(lst_b, lst_a, c);
-	pb(&lst_a, &lst_b);
-	print_list(lst_b, lst_a, c);
-	pb(&lst_a, &lst_b);
-	print_list(lst_b, lst_a, c);
-
+	print_list(lst_a, lst_b, c);
+	start(&lst_a, &lst_b, c);
+	print_list(lst_a, lst_b, c);
 }
