@@ -35,7 +35,6 @@ void ss(t_list *a, t_list *b)
 	gg_iter++;
 }
 
-
 void pa(t_list **a, t_list **b)
 {
 	t_list *tmp;
@@ -276,8 +275,8 @@ void sort_three(t_list **lst_a)
 	b = (*lst_a)->next->content_size;
 	c = (*lst_a)->next->next->content_size;
 	if(a < b && b < c)
-		return ;
-	if(a < b)
+		;
+	else if(a < b)
 	{
 		rra(lst_a);
 		if(c > a)
@@ -292,8 +291,6 @@ void sort_three(t_list **lst_a)
 	}
 	ra(lst_a);
 }
-
-
 
 void		start(t_list **lst_a, t_list **lst_b, int c)
 {
@@ -387,11 +384,6 @@ int get_min_idx(t_list *lst_b)
 		return (-1 * (i - mini));
 }
 
-int	get_min(int a, int b)
-{
-	return ((ft_abs(a) <= ft_abs(b)) ? a : b);
-}
-
 void doo(t_list **lst_a, t_list **lst_b, int c)
 {
 	int i;
@@ -403,7 +395,7 @@ void doo(t_list **lst_a, t_list **lst_b, int c)
 	{
 		max = get_max_idx(*lst_b);
 		min = get_min_idx(*lst_b);
-		i = get_min(max, min);
+		i = (ft_abs(max) <= ft_abs(min)) ? max : min;
 		if(i > 0)
 			while(i--)
 				rb(lst_b);
@@ -413,17 +405,16 @@ void doo(t_list **lst_a, t_list **lst_b, int c)
 		pa(lst_a, lst_b);
 		if(get_min(max, min) == min && ++d)
 			ra(lst_a);
-		print_list(*lst_a, *lst_b, c);
+		//print_list(*lst_a, *lst_b, c);
 	}
 	while(d-- >= 0)
 		rra(lst_a);
-
 }
 
 int		main(int argc, char **argv)
 {
-	t_list	*lst_a;
-	t_list	*lst_b;
+	t_list	*lst_a = NULL;
+	t_list	*lst_b = NULL;
 	int c;
 
 	lst_a = set_list(argc, argv);
