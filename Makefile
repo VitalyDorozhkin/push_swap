@@ -37,7 +37,7 @@ $(NAME): $(OBJ)
 
 $(OBJ) : %.o : %.c
 	make -C $(LIBFT)
-	$(CC) $(CFLAGS) $(LIBFT_FLAGS) -o $@ -c $<
+	$(CC) $(CFLAGS) -I./libft/include  -o $@ -c $<
 
 
 
