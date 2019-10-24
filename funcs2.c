@@ -40,8 +40,10 @@ void rb(t_list **b, int f)
 
 void rr(t_list **a, t_list **b, int f)
 {
-	ra(a, 0);
-	rb(b, 0);
+	if(a && *b)
+		ra(a, 0);
+	if(b && *b)
+		rb(b, 0);
 	if (f)
 		ft_printf("rr\n");
 }
@@ -78,13 +80,15 @@ void rrb(t_list **b, int f)
 		ft_printf("rrb\n");
 }
 
-/*
-**	void rrr(t_list **a, t_list **b, int f)
-**	{
-**		rra(a, 0);
-**		rrb(b, 0);
-**		if (f)
-**			ft_printf("rrr\n");
-**	}
-*/
+
+void rrr(t_list **a, t_list **b, int f)
+{
+	if(a && *b)
+		rra(a, 0);
+	if(b && *b)
+		rrb(b, 0);
+	if (f)
+		ft_printf("rrr\n");
+}
+
 
