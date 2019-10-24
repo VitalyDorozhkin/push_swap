@@ -1,145 +1,4 @@
-#include <libft.h>
-
-int gg_iter = 0;
-
-void sa(t_list *a)
-{
-	if(a && (a)->next)
-	{
-		int tmp;
-
-		tmp = a->content_size;
-		a->content_size = a->next->content_size;
-		a->next->content_size = tmp;
-	}
-	gg_iter++;
-}
-
-void sb(t_list *b)
-{
-	if(b && (b)->next)
-	{		
-		int tmp;
-
-		tmp = b->content_size;
-		b->content_size = b->next->content_size;
-		b->next->content_size = tmp;
-	}
-	gg_iter++;
-}
-
-void ss(t_list *a, t_list *b)
-{
-	sa(a);
-	sb(b);
-	gg_iter++;
-}
-
-void pa(t_list **a, t_list **b)
-{
-	t_list *tmp;
-	if(*b)
-	{
-		tmp = (*b)->next;
-		(*b)->next = *a;
-		*a = *b;
-		*b = tmp;
-	}
-	gg_iter++;
-}
-
-void pb(t_list **a, t_list **b)
-{
-	t_list *tmp;
-	if(*a)
-	{
-		tmp = (*a)->next;
-		(*a)->next = *b;
-		*b = *a;
-		*a = tmp;
-	}
-	gg_iter++;
-}
-
-void ra(t_list **a)
-{
-	if(*a && (*a)->next)
-	{
-		t_list *tmp;
-		t_list *tmp2;
-
-		tmp = *a;
-		*a = (*a)->next;
-		tmp2 = *a;
-		while(tmp2->next)
-			tmp2 = tmp2->next;
-		tmp2->next = tmp;
-		tmp->next = NULL;
-	}
-	gg_iter++;
-}
-
-void rb(t_list **b)
-{
-	if(*b && (*b)->next)
-	{
-		t_list *tmp;
-		t_list *tmp2;
-
-		tmp = *b;
-		*b = (*b)->next;
-		tmp2 = *b;
-		while(tmp2->next)
-			tmp2 = tmp2->next;
-		tmp2->next = tmp;
-		tmp->next = NULL;
-	}
-	gg_iter++;
-}
-
-void rr(t_list **a, t_list **b)
-{
-	ra(a);
-	rb(b);
-	gg_iter++;
-}
-
-void rra(t_list **a)
-{
-	t_list *tmp;
-	t_list *tmp2;
-
-	tmp = *a;
-	while(tmp->next->next)
-		tmp = tmp->next;
-	tmp2 = tmp->next;
-	tmp->next = NULL;
-	tmp2->next = *a;
-	*a = tmp2;
-	gg_iter++;
-}
-
-void rrb(t_list **b)
-{
-	t_list *tmp;
-	t_list *tmp2;
-
-	tmp = *b;
-	while(tmp->next->next)
-		tmp = tmp->next;
-	tmp2 = tmp->next;
-	tmp->next = NULL;
-	tmp2->next = *b;
-	*b = tmp2;
-	gg_iter++;
-}
-
-void rrr(t_list **a, t_list **b)
-{
-	rra(a);
-	rrb(b);
-	gg_iter++;
-}
+#include <push_swap.h>
 
 int ft_lstlen(t_list *lst)
 {
@@ -363,16 +222,16 @@ void sort_three(t_list **lst_a)
 		;
 	else if(a < b)
 	{
-		rra(lst_a);
+		rra(lst_a, 1);
 		if(c > a)
-			sa(*lst_a);
+			sa(*lst_a, 1);
 	}
 	else
 	{
 		if(a < c || b > c)
-			sa(*lst_a);
+			sa(*lst_a, 1);
 		if(a > c && a > b)
-			(c > b) ? ra(lst_a) : rra(lst_a);
+			(c > b) ? ra(lst_a, 1) : rra(lst_a, 1);
 	}
 }
 
@@ -380,22 +239,22 @@ void		start(t_list **lst_a, t_list **lst_b, int c)
 {
 	int		max;
 	int		premax;
-    int		prepremax;
+	int		prepremax;
 
 	max = get_max(*lst_a);
-    premax = get_premax(*lst_a);
-    prepremax = get_prepremax(*lst_a);
+	premax = get_premax(*lst_a);
+	prepremax = get_prepremax(*lst_a);
 	while ((*lst_a)->content_size != max && (*lst_a)->content_size != premax && (*lst_a)->content_size != prepremax)
-		pb(lst_a, lst_b);
-	ra(lst_a);
+		pb(lst_a, lst_b, 1);
+	ra(lst_a, 1);
 	while ((*lst_a)->content_size != max && (*lst_a)->content_size != premax && (*lst_a)->content_size != prepremax)
-		pb(lst_a, lst_b);
-	ra(lst_a);
+		pb(lst_a, lst_b, 1);
+	ra(lst_a, 1);
 	while ((*lst_a)->content_size != max && (*lst_a)->content_size != premax && (*lst_a)->content_size != prepremax)
-		pb(lst_a, lst_b);
-	ra(lst_a);
+		pb(lst_a, lst_b, 1);
+	ra(lst_a, 1);
 	while ((*lst_a)->content_size != max && (*lst_a)->content_size != premax && (*lst_a)->content_size != prepremax)
-		pb(lst_a, lst_b);
+		pb(lst_a, lst_b, 1);
 	sort_three(lst_a);
 }
 
@@ -650,26 +509,26 @@ void doo4(t_list **lst_a, t_list **lst_b, int c)
         if(i >= 0)
         {
             while(i--)
-                rb(lst_b);
+                rb(lst_b, 1);
         }
         else
         {
             while (i++)
-                rrb(lst_b);
+                rrb(lst_b, 1);
         }
         i = count_ops((*lst_b)->content_size, *lst_a);
         if(i >= 0)
         {
             while(i--)
-                ra(lst_a);
+                ra(lst_a, 1);
         }
         else
         {
             while (i++)
-                rra(lst_a);
+                rra(lst_a, 1);
         }
-        pa(lst_a, lst_b);
-        print_list(*lst_a, *lst_b, c);
+        pa(lst_a, lst_b, 1);
+        //print_list(*lst_a, *lst_b, c);
     }
 }
 
@@ -682,19 +541,16 @@ void roll(t_list **lst)
         tmp = tmp->next;
         i++;
     }
-    if(i > ft_lstlen(*lst) - i)
+    if(i < ft_lstlen(*lst) - i)
     {
         while((*lst)->content_size > ft_lstlast(*lst))
-            ra(lst);
+            ra(lst, 1);
     }
     else
     {
         while((*lst)->content_size > ft_lstlast(*lst))
-            rra(lst);
+            rra(lst, 1);
     }
-
-
-
 }
 
 int		main(int argc, char **argv)
@@ -705,13 +561,12 @@ int		main(int argc, char **argv)
 
 	lst_a = set_list(argc, argv);
 	c = get_max_len(lst_a);
-	print_list(lst_a, lst_b, c);
+	//print_list(lst_a, lst_b, c);
 	start(&lst_a, &lst_b, c);
-	print_list(lst_a, lst_b, c);
+	//print_list(lst_a, lst_b, c);
 	doo4(&lst_a, &lst_b, c);
 	roll(&lst_a);
-    print_list(lst_a, lst_b, c);
-	ft_printf("%d", gg_iter);
+    //print_list(lst_a, lst_b, c);
 }
 
 
