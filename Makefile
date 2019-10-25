@@ -16,34 +16,36 @@ CFLAGS		= #-Wall -Wextra -Werror
 
 CC			= gcc
 
-SRC			=	push_swap.c \
-				funcs1.c \
-				funcs2.c
+SRC			=	push_swap \
+				print \
+				funcs1 \
+				funcs2
 
-OBJ			= push_swap.o \
-				funcs1.o \
-				funcs2.o
+OBJ			= $(addprefix $(OBJ_PATH), $(addsuffix .o, $(SRC)))
+
+SRC_PATH	= src/
+
+OBJ_PATH	= .obj/
 
 LIBFT = ./libft
 
 LIBFT_FLAGS	= -L $(LIBFT) -I $(LIBFT)/include -lft
 
-HEADER = -I./include
+HEADER = ./include
 
-LIBFT_HEADER = -I./libft/include
+LIBFT_HEADER = ./libft/include
 
+
+	
 all: $(NAME)
 
-
-
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) $(HEADER) $(LIBFT_FLAGS) -o $(NAME)
+	make -C ./libft
+	$(CC) $(CFLAGS) $(OBJ) -I$(HEADER) $(LIBFT_FLAGS) -o $(NAME)
+	
 
-
-
-$(OBJ) : %.o : %.c
-	make -C $(LIBFT)
-	$(CC) $(CFLAGS) $(LIBFT_HEADER) $(HEADER) -o $@ -c $<
+$(OBJ) : $(OBJ_PATH)%.o : $(SRC_PATH)%.c
+	$(CC) $(CFLAGS) -I$(LIBFT_HEADER) -I$(HEADER) -o $@ -c $<
 
 
 

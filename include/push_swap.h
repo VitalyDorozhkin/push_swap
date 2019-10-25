@@ -14,15 +14,20 @@
 # define PUSH_SWAP_H
 # include <libft.h>
 
-void sa(t_list *a, int f);
-void sb(t_list *b, int f);
-void ss(t_list *a, t_list *b, int f);
-void pa(t_list **a, t_list **b, int f);
-void pb(t_list **a, t_list **b, int f);
-void ra(t_list **a, int f);
-void rb(t_list **b, int f);
-void rr(t_list **a, t_list **b, int f);
-void rra(t_list **a, int f);
-void rrb(t_list **b, int f);
-void rrr(t_list **a, t_list **b, int f);
+void    sa(t_list *a, int f);
+void    sb(t_list *b, int f);
+void    ss(t_list *a, t_list *b, int f);
+void    pa(t_list **a, t_list **b, int f);
+void    pb(t_list **a, t_list **b, int f);
+void    ra(t_list **a, int f);
+void    rb(t_list **b, int f);
+void    rr(t_list **a, t_list **b, int f);
+void    rra(t_list **a, int f);
+void    rrb(t_list **b, int f);
+void    rrr(t_list **a, t_list **b, int f);
+
+t_list  *set_list(int argc, char **argv);
+int     get_max_len(t_list *lst);
+void	ft_print_border(int c, int flag);
+void	print_list(t_list *lst_a, t_list *lst_b, int c);
 #endif

@@ -1,35 +1,5 @@
 #include <push_swap.h>
 
-int ft_lstlen(t_list *lst)
-{
-	t_list *tmp;
-	int i;
-
-	i = 0;
-	tmp = lst;
-	while(tmp)
-	{
-		tmp = tmp->next;
-		i++;
-	}	
-	return (i);
-}
-
-int ft_lstlast(t_list *lst)
-{
-	t_list *tmp;
-	int i;
-
-	i = 0;
-	tmp = lst;
-	while(tmp && tmp->next)
-	{
-		tmp = tmp->next;
-		i++;
-	}	
-	return (tmp->content_size);
-}
-
 t_list	*set_list(int argc, char **argv)
 {
 	t_list	*lst_a = (t_list *)ft_memalloc(sizeof(*lst_a));
@@ -62,151 +32,6 @@ t_list	*set_list(int argc, char **argv)
 		lst_a_tmp = lst_a_tmp->next;
 	lst_a_tmp->next = NULL;
 	return (lst_a);
-}
-
-int get_max_len(t_list *lst)
-{
-	t_list *tmp;
-	int i;
-	int c;
-	i = 0;
-	tmp = lst;
-	while(tmp)
-	{
-		if ((c = ft_nbrlen(tmp->content_size)) > i)
-			i = c;
-		tmp = tmp->next;
-	}	
-	return (i);
-}
-
-int get_max(t_list *lst_b)
-{
-    int		max;
-    t_list	*tmp;
-
-    max = -2147483647;
-    tmp = lst_b;
-    while(tmp)
-    {
-        if((int)tmp->content_size > max)
-            max = tmp->content_size;
-        tmp = tmp->next;
-    }
-    return (max);
-}
-
-int get_premax(t_list *lst_b)
-{
-    int		premax;
-    int		max;
-    t_list	*tmp;
-
-    max = -2147483647;
-    premax = -2147483648;
-    tmp = lst_b;
-    while(tmp)
-    {
-        if((int)tmp->content_size > max)
-        {
-            premax = max;
-            max = (int)tmp->content_size;
-        }
-        else if((int)tmp->content_size > premax)
-            premax = (int)tmp->content_size;
-        tmp = tmp->next;
-    }
-    return (premax);
-}
-
-int get_prepremax(t_list *lst_b)
-{
-    int		prepremax;
-    int		premax;
-    int		max;
-    t_list	*tmp;
-
-    max = -2147483646;
-    premax = -2147483647;
-    prepremax = -2147483648;
-    tmp = lst_b;
-    while(tmp)
-    {
-        if((int)tmp->content_size > max)
-        {
-            prepremax = premax;
-            premax = max;
-            max = (int)tmp->content_size;
-        }
-        else if((int)tmp->content_size > premax)
-        {
-            prepremax = premax;
-            premax = (int)tmp->content_size;
-        }
-        else if ((int)tmp->content_size > prepremax)
-            prepremax = (int)tmp->content_size;
-        tmp = tmp->next;
-    }
-    return (prepremax);
-}
-
-void ft_print_border(int c, int flag)
-{
-	int i = 0;
-	while(i++ <= c / 2)
-		ft_putchar('-');
-	ft_putchar((flag) ? 'A' : '-');
-	i = 0;
-	while(i++ <= c / 2)
-		ft_putchar('-');
-	ft_putstr("  ");
-	i = 0;
-	while(i++ <= c / 2)
-		ft_putchar('-');
-	ft_putchar((flag) ? 'B' : '-');
-	i = 0;
-	while(i++ <= c / 2)
-		ft_putchar('-');
-	ft_putchar('\n');
-}
-
-void	print_list(t_list *lst_a, t_list *lst_b, int c)
-{
-	t_list	*lst_a_tmp;
-	t_list	*lst_b_tmp;
-	int a_len;
-	int b_len;
-	int i = 0;
-	a_len = ft_lstlen(lst_a);
-	b_len = ft_lstlen(lst_b);
-	lst_a_tmp = lst_a;
-	lst_b_tmp = lst_b;
-	c = (c % 2) ? c : c + 1;
-	
-	ft_print_border(c, 1);
-
-
-	while(lst_a_tmp || lst_b_tmp)
-	{
-		if(lst_a_tmp && a_len >= b_len)
-		{
-			a_len--;
-			ft_printf("|%-*d|", c, lst_a_tmp->content_size);
-			lst_a_tmp = lst_a_tmp->next;
-		}
-		else
-			ft_printf("|%*s|", c, " ");
-		ft_printf("  ");
-		if(lst_b_tmp && a_len < b_len)
-		{
-			b_len--;
-			ft_printf("|%-*d|\n", c, lst_b_tmp->content_size);
-			lst_b_tmp = lst_b_tmp->next;
-		}
-		else
-			ft_printf("|%*s|\n", c, " ");
-	}
-	ft_print_border(c, 0);
 }
 
 void sort_three(t_list **lst_a)
@@ -364,8 +189,6 @@ int get_max_idx(t_list *lst_b)
 }
 
 
-
-
 int get_min(t_list *lst_b)
 {
 	int		min;
@@ -410,115 +233,6 @@ int get_min_idx(t_list *lst_b)
 	else
 		return (-1 * (i - mini));
 }
-
-//int	get_min(int a, int b)
-//{
-	//return ((ft_abs(a) <= ft_abs(b)) ? a : b);
-//}
-
-/*void doo(t_list **lst_a, t_list **lst_b, int c)
-{
-	int i;
-	int max;
-	int min;
-	int d;
-	d = 0;
-	while(*lst_b)
-	{
-		max = get_max_idx(*lst_b);
-		min = get_min_idx(*lst_b);
-		i = (ft_abs(max) <= ft_abs(min)) ? max : min;
-		if(i > 0)
-			while(i--)
-				rb(lst_b);
-		else if(i < 0)
-			while(i++)
-				rrb(lst_b);
-		pa(lst_a, lst_b);
-		if(get_min(max, min) == min && ++d)
-			ra(lst_a);
-		//print_list(*lst_a, *lst_b, c);
-	}
-	while(d-- >= 0)
-		rra(lst_a);
-}*/
-/*void doo2(t_list **lst_a, t_list **lst_b, int c)
-{
-	int i;
-	int max;
-	int min;
-	int d;
-	d = 0;
-	while(*lst_b)
-	{
-		if((*lst_b)->content_size < (*lst_a)->content_size)
-		{
-			while ((*lst_b)->content_size < ft_lstlast(*lst_a))
-				rra(lst_a);
-		}
-		else
-		{
-			while ((*lst_b)->content_size > (*lst_a)->content_size)
-				ra(lst_a);
-		}
-		pa(lst_a, lst_b);
-	}
-}*/
-/*void doo3(t_list **lst_a, t_list **lst_b, int c)
-{
-	int i;
-	int premax;
-	int max;
-	int d;
-	d = 0;
-	while(*lst_b)
-	{
-		i = get_max_idx(*lst_b);
-		max = get_max(*lst_b);
-		premax = get_premax(*lst_b);
-		if(i > 0)
-			while((*lst_b)->content_size != max)
-			{
-				if ((*lst_b)->content_size == get_min(*lst_b))
-				{
-				    d++;
-					pa(lst_a, lst_b);
-					ra(lst_a);
-				}
-				else if((*lst_b)->content_size == premax)
-					pa(lst_a, lst_b);
-				else if((*lst_b)->content_size != max)
-					rb(lst_b);
-                print_list(*lst_a, *lst_b, 1);
-			}
-		else if(i < 0)
-			while((*lst_b)->content_size != max)
-			{
-				if ((*lst_b)->content_size == get_min(*lst_b))
-				{
-				    d++;
-					pa(lst_a, lst_b);
-					ra(lst_a);
-				}
-				else if((*lst_b)->content_size == premax)
-					pa(lst_a, lst_b);
-				else if((*lst_b)->content_size != max)
-					rrb(lst_b);
-                print_list(*lst_a, *lst_b, 1);
-			}
-		pa(lst_a, lst_b);
-        print_list(*lst_a, *lst_b, 1);
-		if((*lst_a)->content_size > (*lst_a)->next->content_size)
-        {
-		    sa(*lst_a);
-		    print_list(*lst_a, *lst_b, 1);
-        }
-		//if(get_min(max, min) == min && ++d)
-		//	ra(lst_a);
-	}
-	while(d-- > 0)
-		rra(lst_a);
-}*/
 
 
 int count_ops(int c, t_list *lst_a)
@@ -587,32 +301,7 @@ int opti(int i, t_list *lst_b)
 	else
 		return (-1 * (lenb - i));
 }
-
-int find2(t_list *lst_a, t_list *lst_b, int *res)
-{
-	int i = 0;
-	int min = 2000000000;
-	int mini = 0;
-	t_list *tmp_a = lst_a;
-	t_list *tmp_b = lst_b;
-	int j = ft_lstlen(lst_b);
-	while(tmp_b)
-	{
-		if((i < min || j - i < min) && ft_abs(count_ops(tmp_b->content_size, lst_a)) + i < min)
-		{
-			*res = tmp_b->content_size;
-			min = count_ops(tmp_b->content_size, lst_a) + i;
-			mini = i;
-		}
-		tmp_b = tmp_b->next;
-		i++;
-	}
-	if(mini < j - mini)
-		return (mini);
-	else
-		return (-1 * (j - mini));
-}
-
+ 
 int find(t_list *lst_a, t_list *lst_b, int *res)
 {
 	int i = 0;
@@ -725,47 +414,6 @@ void doo4(t_list **lst_a, t_list **lst_b, int j)
     }
 }
 
-void doo5(t_list **lst_a, t_list **lst_b, int j)
-{
-    int i;
-    int c;
-    int len;
-    int d;
-    int g;
-    d = 0;
-    while(*lst_b)
-    {
-		i = find(*lst_a, *lst_b, &g);
-		
-		if(i * c <= 0)
-		{
-			if(i >= 0)
-			{
-			    while(i--)
-			        rb(lst_b, 1);
-			}
-			else
-			{
-			    while (i++)
-			        rrb(lst_b, 1);
-			}
-			c = count_ops(g, *lst_a);
-			if(c >= 0)
-			{
-			    while(c--)
-			        ra(lst_a, 1);
-			}
-			else
-			{
-			    while (i++)
-			        rra(lst_a, 1);
-			}
-		}
-        pa(lst_a, lst_b, 1);
-        //print_list(*lst_a, *lst_b, j);
-    }
-}
-
 void roll(t_list **lst)
 {
     t_list *tmp = *lst;
@@ -803,26 +451,3 @@ int		main(int argc, char **argv)
 	roll(&lst_a);
     //print_list(lst_a, lst_b, c);
 }
-
-
-
-
-
-
- 
-
- 
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
