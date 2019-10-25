@@ -1,3 +1,4 @@
+#include <push_swap.h>
 
 int get_max(t_list *lst_b)
 {
@@ -37,8 +38,6 @@ int get_premax(t_list *lst_b)
     }
     return (premax);
 }
-
-#include <push_swap.h>
 
 int get_prepremax(t_list *lst_b)
 {

@@ -30,4 +30,9 @@ t_list  *set_list(int argc, char **argv);
 int     get_max_len(t_list *lst);
 void	ft_print_border(int c, int flag);
 void	print_list(t_list *lst_a, t_list *lst_b, int c);
+
+int get_max(t_list *lst_b);
+int get_premax(t_list *lst_b);
+int get_prepremax(t_list *lst_b);
+
 #endif

@@ -10,18 +10,29 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME		= push_swap
+NAME	= push_swap
+NAME_CHECKER	= checker
 
 CFLAGS		= #-Wall -Wextra -Werror
 
 CC			= gcc
 
-SRC			=	push_swap \
+SRC			=	\
+				input \
+				get_max \
 				print \
 				funcs1 \
 				funcs2
 
 OBJ			= $(addprefix $(OBJ_PATH), $(addsuffix .o, $(SRC)))
+
+PUSH_SWAP_OBJ = $(addprefix $(OBJ_PATH), $(addsuffix .o, $(NAME)))
+
+CHECKER_OBJ = $(addprefix $(OBJ_PATH), $(addsuffix .o, $(NAME_CHECKER)))
+
+OBJ_ALL		= $(OBJ)
+OBJ_ALL += $(PUSH_SWAP_OBJ)
+OBJ_ALL += $(CHECKER_OBJ)
 
 SRC_PATH	= src/
 
@@ -39,22 +50,21 @@ LIBFT_HEADER = ./libft/include
 	
 all: $(NAME)
 
-$(NAME): $(OBJ)
+$(NAME): $(OBJ_ALL)
 	make -C ./libft
-	$(CC) $(CFLAGS) $(OBJ) -I$(HEADER) $(LIBFT_FLAGS) -o $(NAME)
-	
+	$(CC) $(CFLAGS) $(OBJ) $(PUSH_SWAP_OBJ) -I$(HEADER) $(LIBFT_FLAGS) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) $(CHECKER_OBJ) -I$(HEADER) $(LIBFT_FLAGS) -o $(NAME_CHECKER)
 
-$(OBJ) : $(OBJ_PATH)%.o : $(SRC_PATH)%.c
+$(OBJ_ALL) : $(OBJ_PATH)%.o : $(SRC_PATH)%.c
 	$(CC) $(CFLAGS) -I$(LIBFT_HEADER) -I$(HEADER) -o $@ -c $<
-
-
 
 clean:
 	make fclean -C $(LIBFT)
-	rm -f $(OBJ)
+	rm -f $(OBJ_ALL)
 
 fclean: clean
 	rm -f $(NAME)
+	rm -f $(NAME_CHECKER)
 
 re: fclean all
 

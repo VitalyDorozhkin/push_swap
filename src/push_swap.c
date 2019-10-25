@@ -1,39 +1,5 @@
 #include <push_swap.h>
 
-t_list	*set_list(int argc, char **argv)
-{
-	t_list	*lst_a = (t_list *)ft_memalloc(sizeof(*lst_a));
-	t_list	*lst_a_tmp;
-	int		t;
-	char	**tmp;
-	int		i;
-	int		j;
-
-	lst_a_tmp = lst_a;
-	i = 0;
-	while (++i < argc)
-	{
-		j = -1;
-		tmp = ft_strsplit(argv[i], ' ');
-		while(tmp[++j])
-		{
-			if((t = ft_atoi(tmp[j])) || tmp[j][0] == '0')
-			{	
-				lst_a_tmp->content_size = t;
-				lst_a_tmp->next = (t_list *)ft_memalloc(sizeof(*lst_a_tmp));
-				lst_a_tmp = lst_a_tmp->next;
-			}
-			free(tmp[j]);
-		}
-		free(tmp);		
-	}
-	lst_a_tmp = lst_a;
-	while(lst_a_tmp && lst_a_tmp->next && lst_a_tmp->next->next)
-		lst_a_tmp = lst_a_tmp->next;
-	lst_a_tmp->next = NULL;
-	return (lst_a);
-}
-
 void sort_three(t_list **lst_a)
 {
 	int a;
@@ -443,8 +409,8 @@ int		main(int argc, char **argv)
 
 	lst_a = set_list(argc, argv);
 	c = get_max_len(lst_a);
-	
-	start2(&lst_a, &lst_b, c);
+
+	start(&lst_a, &lst_b, c);
 	//print_list(lst_a, lst_b, c);
 	doo4(&lst_a, &lst_b, c);
 	//print_list(lst_a, lst_b, c);
