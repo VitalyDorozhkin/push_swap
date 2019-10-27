@@ -401,6 +401,53 @@ void roll(t_list **lst)
     }
 }
 
+
+int mid(t_list *lst)
+{
+	int len = ft_lstlen(lst);
+	int low = len;
+	int up = 0;
+	t_list *tmp1 = lst;
+	t_list *tmp2 = lst;
+	while (tmp1 && low != up && low != up - 1)
+	{
+		low = 0;
+		up = 0;
+		tmp2 = lst;
+		while(tmp2)
+		{
+			up += (tmp2->content_size >= tmp1->content_size);
+			low += (tmp2->content_size < tmp1->content_size);
+			tmp2 = tmp2->next;
+		}
+		if (low != up && low != up - 1)
+			tmp1 = tmp1->next;
+	}
+	return tmp1->content_size;
+}
+
+
+void quick_sort(t_list **lst_a, t_list **lst_b)
+{ft_printf("d");
+	int midi = mid(*lst_a);
+	
+	int lena = ft_lstlen(*lst_a);
+	int lenb = 0;
+	while (lena != lenb && lena != lenb - 1)
+	{
+		if((*lst_a)->content_size >= midi)
+		{
+			lena--;
+			lenb++;
+			while((*lst_a)->content_size > (*lst_b)->content_size)
+			pb(lst_a, lst_b, 1);
+		}
+		else
+			ra(lst_a, 1);
+	}
+}
+
+
 int		main(int argc, char **argv)
 {
 	t_list	*lst_a = NULL;
@@ -409,11 +456,9 @@ int		main(int argc, char **argv)
 
 	lst_a = set_list(argc, argv);
 	c = get_max_len(lst_a);
+	//start(&lst_a, &lst_b, c);
+	//doo4(&lst_a, &lst_b, c);
 
-	start(&lst_a, &lst_b, c);
-	//print_list(lst_a, lst_b, c);
-	doo4(&lst_a, &lst_b, c);
-	//print_list(lst_a, lst_b, c);
-	roll(&lst_a);
-    //print_list(lst_a, lst_b, c);
+	quick_sort(&lst_a, &lst_b);
+    print_list(lst_a, lst_b, c);
 }
