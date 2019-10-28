@@ -1,7 +1,25 @@
 #!/bin/bash
 
-for (( i=1; i <= $1; i++ ))
+l=0
+max=0
+bad=0
+badval=700
+(($2 > 100)) && badval=5500
+for (( i=1; i < $1; i++))
 do
-    c+=$(./push_swap $(./rearg $2)| wc -l) && c+=" + "
+    l=$(./push_swap $(./rearg $2)| wc -l)
+    c+=$l && c+=" + "
+    (($l > $max)) && max=$l
+    (($l >= $badval)) && bad=$(echo $bad + 1 | bc)
 done
-echo $(echo $c | rev | cut -c 3- | rev | bc) / $(echo $c | grep -o + | wc -l) | bc
+
+l=$(./push_swap $(./rearg $2)| wc -l)
+c+=$l
+(($l > $max)) && max=$l
+(($l >= $badval)) && bad=$(echo $bad + 1 | bc)
+
+echo $(echo  $c | bc) / $1 | bc
+echo $c
+echo "max :$max"
+echo "bad :$bad"
+
