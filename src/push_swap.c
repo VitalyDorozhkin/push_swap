@@ -278,16 +278,11 @@ int find(t_list *lst_a, t_list *lst_b, int *res)
 	int j = ft_lstlen(lst_b);
 	while(tmp_b)
 	{
-		if((i < min || j - i < min) && minin(opti(i, lst_b), count_ops(tmp_b->content_size, lst_a), lst_a, lst_b) <= min)
+		if((i < min || j - i < min) &&(minin(opti(i, lst_b), count_ops(tmp_b->content_size, lst_a), lst_a, lst_b) + tmp_b->content_size <= min + *res))
 		{
-			if (minin(opti(i, lst_b), count_ops(tmp_b->content_size, lst_a), lst_a, lst_b) != min ||
-				(*res > tmp_b->content_size && count_ops(tmp_b->content_size, lst_a) >= 0) ||
-				(*res < tmp_b->content_size && count_ops(tmp_b->content_size, lst_a) <= 0))
-			{
-				*res = tmp_b->content_size;
-				min = minin(opti(i, lst_b), count_ops(tmp_b->content_size, lst_a), lst_a, lst_b);
-				mini = i;
-			}
+			*res = tmp_b->content_size;
+			min = minin(opti(i, lst_b), count_ops(tmp_b->content_size, lst_a), lst_a, lst_b);
+			mini = i;
 		}
 		tmp_b = tmp_b->next;
 		i++;
@@ -335,7 +330,7 @@ void doo4(t_list **lst_a, t_list **lst_b, int j)
         	    while (i++)
         	        rrb(lst_b, 1);
         	}
-        	if(c >= 0)
+			if(c >= 0)
         	{
         	    while(c--)
         	        ra(lst_a, 1);
@@ -426,27 +421,130 @@ int mid(t_list *lst)
 	return tmp1->content_size;
 }
 
-
 void quick_sort(t_list **lst_a, t_list **lst_b)
-{ft_printf("d");
+{
 	int midi = mid(*lst_a);
-	
 	int lena = ft_lstlen(*lst_a);
 	int lenb = 0;
-	while (lena != lenb && lena != lenb - 1)
+	int i = 0;
+	while ((lena = ft_lstlen(*lst_a)) > 3)
 	{
-		if((*lst_a)->content_size >= midi)
+		midi = mid(*lst_a);
+		i = 0;
+		while (i < lena / 2 && lena - i > 3)
 		{
-			lena--;
-			lenb++;
-			while((*lst_a)->content_size > (*lst_b)->content_size)
-			pb(lst_a, lst_b, 1);
+			if((*lst_a)->content_size < midi && ++i)
+			{
+				pb(lst_a, lst_b, 1);
+				if(lst_b < mid(*lst_b))
+				{
+					if(i < lena / 2 && lena - i > 3 && (*lst_a)->content_size >= midi)
+						rr(lst_a, lst_b, 1);
+					else
+						rb(lst_b, 1);
+				}
+			}
+			else
+				ra(lst_a, 1);
 		}
-		else
-			ra(lst_a, 1);
 	}
 }
 
+
+
+
+
+/*
+void quickSort(int *numbers, int left, int right)
+{
+  int pivot; // разрешающий элемент
+  int l_hold = left; //левая граница
+  int r_hold = right; // правая граница
+  pivot = numbers[left];
+  while (left < right) // пока границы не сомкнутся
+  {
+    while ((numbers[right] >= pivot) && (left < right))
+      right--; // сдвигаем правую границу пока элемент [right] больше [pivot]
+    if (left != right) // если границы не сомкнулись
+    {
+      numbers[left] = numbers[right]; // перемещаем элемент [right] на место разрешающего
+      left++; // сдвигаем левую границу вправо
+    }
+    while ((numbers[left] <= pivot) && (left < right))
+      left++; // сдвигаем левую границу пока элемент [left] меньше [pivot]
+    if (left != right) // если границы не сомкнулись
+    {
+      numbers[right] = numbers[left]; // перемещаем элемент [left] на место [right]
+      right--; // сдвигаем правую границу вправо
+    }
+  }
+  numbers[left] = pivot; // ставим разрешающий элемент на место
+  pivot = left;
+  left = l_hold;
+  right = r_hold;
+  if (left < pivot) // Рекурсивно вызываем сортировку для левой и правой части массива
+    quickSort(numbers, left, pivot - 1);
+  if (right > pivot)
+    quickSort(numbers, pivot + 1, right);
+}
+
+
+int	*get_sorted(t_list *lst)
+{
+	int	*res;
+	int	i;
+	int len;
+	t_list *tmp;
+
+	tmp = lst;
+	len = ft_lstlen(tmp);
+	i = 0;
+	res = ft_memalloc(sizeof(int) * len);
+	while (i < len)
+	{
+		res[i++] = tmp->content_size;
+		tmp = tmp->next;
+	}
+	quickSort(res, 0, len - 1);
+	return (res);
+}
+
+
+void    handle_a(t_list **lst_a, t_list **lst_b)
+{
+    int     *arr;
+    int     i;
+    int     j;
+    t_list   *tmp;
+    arr = get_sorted(*lst_a);
+    i = ft_lstlen(*lst_a);
+    j = 0;
+    while (i > 3)
+    {
+        j = i;
+        while ((j-- > 0))
+        {
+            tmp = *lst_a;
+            if (tmp->content_size > arr[(3 * i) / 4 - 1])
+            {
+                pb(lst_a, lst_b, 1);
+                rb(lst_b, 1);
+            }
+            else if (tmp->content_size > arr[i / 2 - 1])
+                pb(lst_a, lst_b, 1);
+            else
+                ra(lst_a, 1);
+        }
+        j = i / 2;
+        while (j-- > 0)
+            rra(lst_a, 1);
+        i = i / 2;
+        j = 10;
+    }
+    while (i-- > 0)
+        ra(lst_a, 1);
+}
+*/
 
 int		main(int argc, char **argv)
 {
@@ -456,9 +554,10 @@ int		main(int argc, char **argv)
 
 	lst_a = set_list(argc, argv);
 	c = get_max_len(lst_a);
-	//start(&lst_a, &lst_b, c);
-	//doo4(&lst_a, &lst_b, c);
-
 	quick_sort(&lst_a, &lst_b);
-    print_list(lst_a, lst_b, c);
+	//handle_a(&lst_a, &lst_b);
+	sort_three2(&lst_a);
+	doo4(&lst_a, &lst_b, c);
+	roll(&lst_a);
+	//print_list(lst_a, lst_b, 3);
 }
