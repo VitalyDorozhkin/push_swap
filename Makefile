@@ -13,7 +13,7 @@
 NAME	= push_swap
 NAME_CHECKER	= checker
 
-CFLAGS		= #-Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra #-Werror
 
 CC			= gcc
 

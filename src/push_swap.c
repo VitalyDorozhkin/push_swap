@@ -12,7 +12,7 @@
 
 #include <push_swap.h>
 
-void sort_three(t_list **lst_a)
+void	sort_three(t_list **lst_a)
 {
 	int	a;
 	int	b;
@@ -21,11 +21,22 @@ void sort_three(t_list **lst_a)
 	a = (*lst_a)->content_size;
 	b = (*lst_a)->next->content_size;
 	c = (*lst_a)->next->next->content_size;
-	if((a < c && c < b) || (b < a && a < c) || (c < b && b < a))
+	if ((a < c && c < b) || (b < a && a < c) || (c < b && b < a))
 		sa(*lst_a, 1);
 }
 
-int count_ops(int c, t_list *lst_a)
+int		opti(int i, t_list *lst_b)
+{
+	int	lenb;
+
+	lenb = ft_lstlen(lst_b);
+	if (i < lenb - i)
+		return (i);
+	else
+		return (-1 * (lenb - i));
+}
+
+int		count_ops(int c, t_list *lst_a)
 {
 	t_list	*tmp_a;
 	int		i;
@@ -34,28 +45,28 @@ int count_ops(int c, t_list *lst_a)
 	tmp_a = lst_a;
 	i = 0;
 	j = ft_lstlen(lst_a);
-	if (tmp_a->content_size > c)
+	if ((int)(tmp_a->content_size) > c)
 	{
-	    while (tmp_a->next && tmp_a->content_size < tmp_a->next->content_size)
-	        tmp_a = tmp_a->next;
-	    tmp_a = tmp_a->next;
-	    while (tmp_a && tmp_a->content_size < c)
-	        tmp_a = tmp_a->next;
-	    while (tmp_a && ++i)
-	        tmp_a = tmp_a->next;
-	    return (-i);
+		while (tmp_a->next && tmp_a->content_size < tmp_a->next->content_size)
+			tmp_a = tmp_a->next;
+		tmp_a = tmp_a->next;
+		while (tmp_a && tmp_a->content_size < (size_t)c)
+			tmp_a = tmp_a->next;
+		while (tmp_a && ++i)
+			tmp_a = tmp_a->next;
+		return (-i);
 	}
-	while (tmp_a && tmp_a->content_size <= c && ++i)
-	    tmp_a = tmp_a->next;
+	while (tmp_a && tmp_a->content_size <= (size_t)c && ++i)
+		tmp_a = tmp_a->next;
 	return (i);
 }
 
-int max(int a, int b)
+int		max(int a, int b)
 {
 	return ((a >= b) ? a : b);
 }
 
-int minin(int i, int c, t_list *lst_a, t_list *lst_b)
+int		minin(int i, int c, t_list *lst_a, t_list *lst_b)
 {
 	int	lena;
 	int	lenb;
@@ -69,24 +80,13 @@ int minin(int i, int c, t_list *lst_a, t_list *lst_b)
 			i += (i + c > max(lenb + i, c)) ? lenb : 0;
 		else
 			c += (i + c > max(lena + c, i)) ? lena : 0;
-    }
-    if (i * c >= 0)
-    	return (max(i, c));
-    return (i + c);
+	}
+	if (i * c >= 0)
+		return (max(i, c));
+	return (i + c);
 }
 
-int opti(int i, t_list *lst_b)
-{
-	int	lenb;
-
-	lenb = ft_lstlen(lst_b);
-	if (i < lenb - i)
-		return (i);
-	else
-		return (-1 * (lenb - i));
-}
-
-int find(t_list *lst_a, t_list *lst_b, int *res)
+int		find(t_list *lst_a, t_list *lst_b, int *res)
 {
 	int		i;
 	int		min;
@@ -101,7 +101,7 @@ int find(t_list *lst_a, t_list *lst_b, int *res)
 	while (tmp_b)
 	{
 		if ((i < min || j - i < min) && (minin(i, count_ops(tmp_b->content_size,
-			lst_a), lst_a, lst_b) + tmp_b->content_size <= min + *res))
+			lst_a), lst_a, lst_b) + tmp_b->content_size <= (size_t)min + *res))
 		{
 			*res = tmp_b->content_size;
 			min = minin(i, count_ops(tmp_b->content_size, lst_a), lst_a, lst_b);
@@ -151,21 +151,23 @@ void	go_self(t_list **lst_a, t_list **lst_b, int i, int c)
 			rra(lst_a, 1);
 }
 
-void push_back(t_list **lst_a, t_list **lst_b)
+void	push_back(t_list **lst_a, t_list **lst_b)
 {
 	int	i;
 	int	c;
 	int	g;
 
-	while(*lst_b)
+	while (*lst_b)
 	{
 		i = find(*lst_a, *lst_b, &g);
 		c = count_ops(g, *lst_a);
 		if (i * c < 0)
+		{
 			if (i < 0 && i + c > max(ft_lstlen(*lst_b) + i, c))
 				i = ft_lstlen(*lst_b) + i;
 			else if (c < 0 && i + c > max(ft_lstlen(*lst_a) + c, i))
 				c = ft_lstlen(*lst_a) + c;
+		}
 		if (i * c <= 0)
 			go_self(lst_a, lst_b, i, c);
 		else
@@ -174,10 +176,10 @@ void push_back(t_list **lst_a, t_list **lst_b)
 	}
 }
 
-void roll(t_list **lst)
+void	roll(t_list **lst)
 {
-	t_list *tmp;
-	int	i;
+	t_list	*tmp;
+	int		i;
 
 	tmp = *lst;
 	i = 0;
@@ -187,14 +189,14 @@ void roll(t_list **lst)
 		i++;
 	}
 	if (i < ft_lstlen(*lst) - i)
-		while((*lst)->content_size > ft_lstlast(*lst))
+		while ((*lst)->content_size > (size_t)ft_lstlast(*lst))
 			ra(lst, 1);
 	else
-		while((*lst)->content_size > ft_lstlast(*lst))
+		while ((*lst)->content_size > (size_t)ft_lstlast(*lst))
 			rra(lst, 1);
 }
 
-int mid(t_list *lst)
+int		mid(t_list *lst)
 {
 	int		low;
 	int		up;
@@ -233,13 +235,13 @@ void	quick_sort(t_list **lst_a, t_list **lst_b)
 		midi = mid(*lst_a);
 		i = 0;
 		while (i < lena / 2 && lena - i > 3)
-			if ((*lst_a)->content_size < midi && ++i)
+			if ((*lst_a)->content_size < (size_t)midi && ++i)
 			{
 				pb(lst_a, lst_b, 1);
-				if ((*lst_b)->content_size > mid(*lst_b))
+				if ((*lst_b)->content_size > (size_t)mid(*lst_b))
 				{
 					if (i < lena / 2 && lena - i > 3 &&
-						(*lst_a)->content_size >= midi)
+						(*lst_a)->content_size >= (size_t)midi)
 						rr(lst_a, lst_b, 1);
 					else
 						rb(lst_b, 1);
@@ -263,5 +265,5 @@ int		main(int argc, char **argv)
 	sort_three(&lst_a);
 	push_back(&lst_a, &lst_b);
 	roll(&lst_a);
-	//print_list(lst_a, lst_b, 3);
+	print_list(lst_a, lst_b, 3);
 }
