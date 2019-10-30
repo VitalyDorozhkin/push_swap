@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   funcs1.c                                           :+:      :+:    :+:   */
+/*   helpers1.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pparalax <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,68 +12,60 @@
 
 #include <push_swap.h>
 
-void	sa(t_list *a, int f)
+void	print_message(char *str)
 {
-	int	tmp;
+	ft_printf("%s", str);
+	exit(0);
+}
 
-	if (a && (a)->next)
+int		max(int a, int b)
+{
+	return ((a >= b) ? a : b);
+}
+
+void	is_dub(t_list *lst_a)
+{
+	t_list *tmp1;
+	t_list *tmp2;
+
+	tmp1 = lst_a;
+	while (tmp1 && tmp1->next)
 	{
-		tmp = a->content_size;
-		a->content_size = a->next->content_size;
-		a->next->content_size = tmp;
+		tmp2 = tmp1->next;
+		while (tmp2)
+		{
+			if (tmp1->content_size == tmp2->content_size)
+				print_message("Error");
+			tmp2 = tmp2->next;
+		}
+		tmp1 = tmp1->next;
 	}
-	if (f)
-		ft_printf("sa\n");
 }
 
-void	sb(t_list *b, int f)
-{
-	int	tmp;
-
-	if (b && (b)->next)
-	{
-		tmp = b->content_size;
-		b->content_size = b->next->content_size;
-		b->next->content_size = tmp;
-	}
-	if (f)
-		ft_printf("sb\n");
-}
-
-void	ss(t_list *a, t_list *b, int f)
-{
-	sa(a, 0);
-	sb(b, 0);
-	if (f)
-		ft_printf("ss\n");
-}
-
-void	pa(t_list **a, t_list **b, int f)
+void	is_sort(t_list *lst_a)
 {
 	t_list	*tmp;
 
-	if (*b)
+	tmp = lst_a;
+	while (tmp && tmp->next)
 	{
-		tmp = (*b)->next;
-		(*b)->next = *a;
-		*a = *b;
-		*b = tmp;
+		if (tmp->content_size >= tmp->next->content_size)
+			return ;
+		tmp = tmp->next;
 	}
-	if (f)
-		ft_printf("pa\n");
+	exit(0);
 }
 
-void	pb(t_list **a, t_list **b, int f)
+void	is_small(t_list **lst_a)
 {
-	t_list	*tmp;
-
-	if (*a)
+	if (ft_lstlen(*lst_a) > 3)
+		return ;
+	if (ft_lstlen(*lst_a) == 3)
 	{
-		tmp = (*a)->next;
-		(*a)->next = *b;
-		*b = *a;
-		*a = tmp;
+		sort_three(lst_a);
+		roll(lst_a);
 	}
-	if (f)
-		ft_printf("pb\n");
+	else if (ft_lstlen(*lst_a) == 2)
+		sa(*lst_a, 1);
+	exit(0);
 }

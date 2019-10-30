@@ -13,13 +13,16 @@
 NAME	= push_swap
 NAME_CHECKER	= checker
 
-CFLAGS		= -Wall -Wextra #-Werror
+CFLAGS		= -Wall -Wextra -Werror
 
 CC			= gcc
 
 SRC			=	\
+				sort1 \
+				sort2 \
+				helpers1 \
+				helpers2 \
 				input \
-				get_max \
 				print \
 				funcs1 \
 				funcs2
@@ -46,16 +49,16 @@ HEADER = ./include
 
 LIBFT_HEADER = ./libft/include
 
+all: liba $(NAME)
 
-	
-all: $(NAME)
-
-$(NAME): $(OBJ_ALL)
+liba:
 	make -C ./libft
+
+$(NAME): $(OBJ_ALL) libft/libft.a
 	$(CC) $(CFLAGS) $(OBJ) $(PUSH_SWAP_OBJ) -I$(HEADER) $(LIBFT_FLAGS) -o $(NAME)
 	$(CC) $(CFLAGS) $(OBJ) $(CHECKER_OBJ) -I$(HEADER) $(LIBFT_FLAGS) -o $(NAME_CHECKER)
 
-$(OBJ_ALL) : $(OBJ_PATH)%.o : $(SRC_PATH)%.c
+$(OBJ_ALL) : $(OBJ_PATH)%.o : $(SRC_PATH)%.c include/push_swap.h
 	$(CC) $(CFLAGS) -I$(LIBFT_HEADER) -I$(HEADER) -o $@ -c $<
 
 clean:

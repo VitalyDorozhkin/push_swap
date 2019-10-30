@@ -10,47 +10,72 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include <push_swap.h>
+
+int		visualise(char *comand, t_list *lst_a, t_list *lst_b, int c)
+{
+	if (c)
+	{
+		(c < 1000) ? usleep(c * 1000) : usleep(c);
+		system("clear");
+		print_list(lst_a, lst_b, 0, comand);
+	}
+	return (0);
+}
+
+int		check_comand(char *comand, t_list **lst_a, t_list **lst_b)
+{
+	if (!(ft_strcmp(comand, "sa")))
+		sa(*lst_a, 0);
+	else if (!(ft_strcmp(comand, "sb")))
+		sb(*lst_b, 0);
+	else if (!(ft_strcmp(comand, "ss")))
+		ss(*lst_a, *lst_b, 0);
+	else if (!(ft_strcmp(comand, "pa")))
+		pa(lst_a, lst_b, 0);
+	else if (!(ft_strcmp(comand, "pb")))
+		pb(lst_a, lst_b, 0);
+	else if (!(ft_strcmp(comand, "ra")))
+		ra(lst_a, 0);
+	else if (!(ft_strcmp(comand, "rb")))
+		rb(lst_b, 0);
+	else if (!(ft_strcmp(comand, "rr")))
+		rr(lst_a, lst_b, 0);
+	else if (!(ft_strcmp(comand, "rra")))
+		rra(lst_a, 0);
+	else if (!(ft_strcmp(comand, "rrb")))
+		rrb(lst_b, 0);
+	else if (!(ft_strcmp(comand, "rrr")))
+		rrr(lst_a, lst_b, 0);
+	else
+		return (0);
+	return (1);
+}
 
 int		main(int argc, char **argv)
 {
-	t_list	*lst_a = NULL;
-	t_list	*lst_b = NULL;
-	int c;
-    char *comand;
+	int		c;
+	char	*comand;
+	t_list	*lst_a;
+	t_list	*lst_b;
+
+	c = 0;
+	read_flags_v(&argc, &argv, &c);
+	read_flags_f(&argc, &argv);
 	lst_a = set_list(argc, argv);
-	c = get_max_len(lst_a);
-
-    while (get_next_line(0, &comand))
-    {
-        (ft_strcmp(comand, "sa")) ? (void)0 : sa(lst_a, 0);
-        (ft_strcmp(comand, "sb")) ? (void)0 : sb(lst_b, 0);
-        (ft_strcmp(comand, "ss")) ? (void)0 : ss(lst_a, lst_b, 0);
-        (ft_strcmp(comand, "pa")) ? (void)0 : pa(&lst_a, &lst_b, 0);
-        (ft_strcmp(comand, "pb")) ? (void)0 : pb(&lst_a, &lst_b, 0);
-        (ft_strcmp(comand, "ra")) ? (void)0 : ra(&lst_a, 0);
-        (ft_strcmp(comand, "rb")) ? (void)0 : rb(&lst_b, 0);
-        (ft_strcmp(comand, "rr")) ? (void)0 : rr(&lst_a, &lst_b, 0);
-        (ft_strcmp(comand, "rra")) ? (void)0 : rra(&lst_a, 0);
-        (ft_strcmp(comand, "rrb")) ? (void)0 : rrb(&lst_b, 0);
-        (ft_strcmp(comand, "rrr")) ? (void)0 : rrr(&lst_a, &lst_b, 0);
-    }
-
-    print_list(lst_a, lst_b, c);
-    if(lst_b || !lst_a)
-    {
-        ft_printf("KO");
-        return (0);
-    }
-    while (lst_a->next)
-    {
-        if (lst_a->content_size >= lst_a->next->content_size)
-        {
-            ft_printf("KO");
-            return 0;
-        }
-        lst_a = lst_a->next;
-    }
-    ft_printf("OK");
+	is_dub(lst_a);
+	while (get_next_line(0, &comand))
+		if (!check_comand(comand, &lst_a, &lst_b) ||
+			visualise(comand, lst_a, lst_b, c))
+			print_message("Error");
+	if (lst_b || !lst_a)
+		print_message("KO");
+	while (lst_a->next)
+	{
+		if (lst_a->content_size >= lst_a->next->content_size)
+			print_message("KO");
+		lst_a = lst_a->next;
+	}
+	ft_printf("OK");
+	exit(0);
 }
